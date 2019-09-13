@@ -1,0 +1,45 @@
+/* NOTE: for use with fnStateMachine */
+
+
+curl -X POST \
+  http://127.0.0.1:8888/machine \
+  -H 'Cache-Control: no-cache' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "Name": "test2",
+  "StartAt": "One",
+  "States": {
+      "One": {
+          "Type": "Task",
+          "Resource": "http://localhost:8080/invoke/01DMG7X2G5NG8G00GZJ0000004",
+          "Catch": [
+              { "ErrorEquals": ["States.ALL"], "Next": "Fail"}
+          ],
+          "Next": "Two"
+      },
+      "Two": {
+          "Type": "Task",
+          "Resource": "http://localhost:8080/invoke/01DMG7VGWBNG8G00GZJ0000002",
+          "Catch": [
+              { "ErrorEquals": ["States.ALL"], "Next": "Fail"}
+          ],
+          "Next": "Three"
+      },
+      "Three": {
+          "Type": "Task",
+          "Resource": "http://localhost:8080/invoke/01DMG7W9P6NG8G00GZJ0000003",
+          "Catch": [
+              { "ErrorEquals": ["States.ALL"], "Next": "Fail"}
+          ],
+          "Next": "Success"
+      },
+      "Fail": {
+          "Type": "Fail"
+      },
+      "Success": {
+          "Type": "Succeed"
+      }
+  }
+}
+
+'
